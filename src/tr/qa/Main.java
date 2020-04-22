@@ -349,7 +349,7 @@ public class Main {
                     if (el.getName() == "result") {
                         // System.out.println( el.getText() );
                         if (el.getText().contains("FAILURE")) {
-                            System.out.println("result:", el.getText());
+                            System.out.println("result:"+ el.getText());
                             // failures += 1;
 
 //                            TODO: Need to add detailed report.
@@ -359,7 +359,7 @@ public class Main {
                             emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b> </td><td><b><font color='red'>" + el.getText() + "</font></b></td></tr>");
                             //detailedReport(dt);
                         } else if (el.getText().contains("UNSTABLE")) {
-                            System.out.println("result:", el.getText());
+                            System.out.println("result:"+ el.getText());
                             // unstable += 1;
 //                            emailContent.append( "<b><font color='SteelBlue'>" + el.getText() + "</font></b>" );
 //                            String TnEU = detailedReport(dt);
@@ -368,7 +368,7 @@ public class Main {
                             emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='SteelBlue'>" + el.getText() + "</font></b></td></tr>");
 
                         } else if (el.getText().contains("SUCCESS")) {
-                            System.out.println("result:", el.getText());
+                            System.out.print("result:"+ el.getText());
                             //emailContent.append( "<b><font color='green'>" + el.getText() + "</font></b>" );
                             emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='green'>" + el.getText() + "</font></b></td><td ></td></tr>");
                         }
