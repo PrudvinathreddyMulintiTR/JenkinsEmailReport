@@ -22,7 +22,7 @@ import org.dom4j.io.SAXReader;
 
 public class Main {
 
-    static String buildNumberFileName = "buildVerBamboo.txt";
+//    static String buildNumberFileName = "buildVerBamboo.txt";
     static String buildNumber = "1";
     static String jenkinsHostPort = "http://c962stnapp.intqa.thomsonreuters.com:8080";
     //    static String targetHostPort = "http://c962stnapp.intqa.thomsonreuters.com:6500";
@@ -30,12 +30,12 @@ public class Main {
     static URL url,rep_URL;
     static int failures = 0;
     static int unstable = 0;
-    static int isrunning = 0;
+    static int isRunning = 0;
     static int successful = 0;
     static String suiteTitle = "Jenkins Test Suite Report for UI Automation QA jobs";
     static StringBuilder emailContent = new StringBuilder();
     static StringBuilder errorFooter = new StringBuilder();
-    static String releaseNumber = "DETC-R120";
+//    static String releaseNumber = "DETC-R120";
 
     public static void main(String[] args) throws Exception {
         //buildNumber = getLatestBuildNumberFromBamboo(releaseNumber);
@@ -171,77 +171,75 @@ public class Main {
 
 
     //gets build number from target system
-
-
-    //needs an annotated suppress warning here for the XML request but I don't know which one it needs
-    private static void buildEmailContent_old() {
-        emailContent.append("Release number: " + releaseNumber + "<br/>");
-        emailContent.append("Build number: " + getLatestBuildNumberFromBamboo(releaseNumber) + "<br/>");
-//        emailContent.append("Test target: http://" + testHostPort + "<br/>");
-        emailContent.append("Aggregate report: http://http://c962stnapp.intqa.thomsonreuters.com:8080 <br/>--------------------------<br/>");
-
-        myloop:
-        for (DefinedTests dt : DefinedTests.values()) {
-            System.out.print("Status \"" + dt.toString() + "\": ");
-            emailContent.append("Status \"" + dt.toString() + "\": ");
-            try {
-                url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
-                System.out.println("buildNumberFileHandleing status against url: " + url.toString());
-            } catch (MalformedURLException e1) {
-                e1.printStackTrace();
-            }
-
-            try {
-                Document dom = new SAXReader().read(url);
-                @SuppressWarnings("unchecked")
-                List<Element> les = dom.getRootElement().elements(); //TODO deprecated way of doing this?
-                for (Element el : les) {
-
-                    // if job is currently running print status to report
-                    if (el.getName() == "building") {
-                        if (el.getText() == "true") {
-                            System.out.println("Found a running job.");
-                            isrunning += 1;
-                            emailContent.append("<b>RUNNING</b>");
-                            break myloop; //break out of for loop
-                        }
-                    }
-
-                    // get result status from XML
-                    //System.out.println( "Test name: " + el.getName() );
-                    if (el.getName() == "result") {
-                        System.out.println(el.getText());
-                        if (el.getText().contains("FAILURE")) {
-                            failures += 1;
-                            emailContent.append("<b><font color='red'>" + el.getText() + "</font></b>");
-                        } else if (el.getText().contains("UNSTABLE")) {
-                            unstable += 1;
-                            emailContent.append("<b><font color='SteelBlue'>" + el.getText() + "</font></b>");
-                        } else if (el.getText().contains("SUCCESS")) {
-                            emailContent.append("<b><font color='green'>" + el.getText() + "</font></b>");
-                        }
-                    }
-
-                }
-
-            } catch (DocumentException e) {
-                System.out.println("No status. There was an error reading status.");
-                emailContent.append("<font color='red'>No status. There was an error reading status.</font>");
-                errorFooter.append("Test Error:\n" + e.getMessage() + "<br/><br/>");
-            }
-
-            emailContent.append("<br/>");
-
-        }
-
-        emailContent.append("<br/><br/>SUMMARY:<br/>");
-        emailContent.append("<h3>Failures: " + failures + "</h3>");
-        emailContent.append("<h3>Running Jobs: " + isrunning + "</h3>");
-        emailContent.append("<h3>Unstable jobs: " + unstable + "</h3>");
-        emailContent.append("<br/><br/>ERRORS:<br/><br>");
-        emailContent.append("<i>" + errorFooter + "</i><br/><br/>");
-        emailContent.append("-----------------------------------<br/><i>NOTE: To change the look of this report, edit the Main.java in this test report project.  To<br/>change the list of Jenkins jobs handled by this report, edit the DefinedTests.java .</i>");
-    }
+//    //needs an annotated suppress warning here for the XML request but I don't know which one it needs
+//    private static void buildEmailContent_old() {
+//        emailContent.append("Release number: " + releaseNumber + "<br/>");
+//        emailContent.append("Build number: " + getLatestBuildNumberFromBamboo(releaseNumber) + "<br/>");
+////        emailContent.append("Test target: http://" + testHostPort + "<br/>");
+//        emailContent.append("Aggregate report: http://http://c962stnapp.intqa.thomsonreuters.com:8080 <br/>--------------------------<br/>");
+//
+//        myloop:
+//        for (DefinedTests dt : DefinedTests.values()) {
+//            System.out.print("Status \"" + dt.toString() + "\": ");
+//            emailContent.append("Status \"" + dt.toString() + "\": ");
+//            try {
+//                url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
+//                System.out.println("buildNumberFileHandleing status against url: " + url.toString());
+//            } catch (MalformedURLException e1) {
+//                e1.printStackTrace();
+//            }
+//
+//            try {
+//                Document dom = new SAXReader().read(url);
+//                @SuppressWarnings("unchecked")
+//                List<Element> les = dom.getRootElement().elements(); //TODO deprecated way of doing this?
+//                for (Element el : les) {
+//
+//                    // if job is currently running print status to report
+//                    if (el.getName() == "building") {
+//                        if (el.getText() == "true") {
+//                            System.out.println("Found a running job.");
+//                            isRunning += 1;
+//                            emailContent.append("<b>RUNNING</b>");
+//                            break myloop; //break out of for loop
+//                        }
+//                    }
+//
+//                    // get result status from XML
+//                    //System.out.println( "Test name: " + el.getName() );
+//                    if (el.getName() == "result") {
+//                        System.out.println(el.getText());
+//                        if (el.getText().contains("FAILURE")) {
+//                            failures += 1;
+//                            emailContent.append("<b><font color='red'>" + el.getText() + "</font></b>");
+//                        } else if (el.getText().contains("UNSTABLE")) {
+//                            unstable += 1;
+//                            emailContent.append("<b><font color='SteelBlue'>" + el.getText() + "</font></b>");
+//                        } else if (el.getText().contains("SUCCESS")) {
+//                            emailContent.append("<b><font color='green'>" + el.getText() + "</font></b>");
+//                        }
+//                    }
+//
+//                }
+//
+//            } catch (DocumentException e) {
+//                System.out.println("No status. There was an error reading status.");
+//                emailContent.append("<font color='red'>No status. There was an error reading status.</font>");
+//                errorFooter.append("Test Error:\n" + e.getMessage() + "<br/><br/>");
+//            }
+//
+//            emailContent.append("<br/>");
+//
+//        }
+//
+//        emailContent.append("<br/><br/>SUMMARY:<br/>");
+//        emailContent.append("<h3>Failures: " + failures + "</h3>");
+//        emailContent.append("<h3>Running Jobs: " + isRunning + "</h3>");
+//        emailContent.append("<h3>Unstable jobs: " + unstable + "</h3>");
+//        emailContent.append("<br/><br/>ERRORS:<br/><br>");
+//        emailContent.append("<i>" + errorFooter + "</i><br/><br/>");
+//        emailContent.append("-----------------------------------<br/><i>NOTE: To change the look of this report, edit the Main.java in this test report project.  To<br/>change the list of Jenkins jobs handled by this report, edit the DefinedTests.java .</i>");
+//    }
 
     /*
     Added by Lakshmi
@@ -250,7 +248,7 @@ public class Main {
         String report;
         String DetRep = "";
         try {
-            rep_URL = new URL("http://" + jenkinsHostPort + "/job/" + dtObj.toString() + "/lastBuild/testReport/api/xml");
+            rep_URL = new URL("http://" + jenkinsHostPort + "/job/" + dtObj.toString() + "/lastBuild/api/xml");
         } catch (MalformedURLException e1) {
             System.out.println(e1.getMessage());
         }
@@ -314,11 +312,11 @@ public class Main {
         overallSummary();
         emailContent.append("<br/>");
 
-        if (failures > 15) {
-            emailContent.append("<i>Info : Most of the jobs failed due to common issues. Please look in to the console</b>" + "</i></br></br>");
-//            emailContent.append("<b>Individual Job Report:</b>" + "</br>");
-//            oldreportFormat();
-        }
+//        if (failures > 15) {
+//            emailContent.append("<i>Info : Most of the jobs failed due to common issues. Please look in to the console</b>" + "</i></br></br>");
+////            emailContent.append("<b>Individual Job Report:</b>" + "</br>");
+////            oldreportFormat();
+//        }
         emailContent.append("<b>Individual Job Report:</b>" + "</br>");
         emailContent.append("<style> table ,th, td {border: 1px solid black;border-collapse: collapse;} th, td {padding: 15px;} th{background-color: #ff9900;}</style>");
         emailContent.append("<table style='width:auto' ><tr><th>S.No</th><th >RestJob Name</th><th >Status</th> <th >Failure Details (if any)</th></tr>");
@@ -341,7 +339,7 @@ public class Main {
                     if (el.getName() == "building") {
                         if (el.getText() == "true") {
                             System.out.println("Found a running job.");
-                            // isrunning += 1;
+                            // isRunning += 1;
                             emailContent.append("<b>RUNNING</b>");
                             break myloop; //break out of for loop
                         }
@@ -353,17 +351,18 @@ public class Main {
                         if (el.getText().contains("FAILURE")) {
                             // failures += 1;
 
-                            String TnEF = detailedReport(dt);
-                            TnEF = TnEF.replace("</body>","body");
-                            TnEF = TnEF.replace("</hr>","hr");
+//                            TODO: Need to add detailed report.
+//                            String TnEF = detailedReport(dt);
+//                            TnEF = TnEF.replace("</body>","body");
+//                            TnEF = TnEF.replace("</hr>","hr");
                             emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b> </td><td><b><font color='red'>" + el.getText() + "</font></b></td><td >" + TnEF + "</td></tr>");
                             //detailedReport(dt);
                         } else if (el.getText().contains("UNSTABLE")) {
                             // unstable += 1;
 //                            emailContent.append( "<b><font color='SteelBlue'>" + el.getText() + "</font></b>" );
-                            String TnEU = detailedReport(dt);
-                            TnEU = TnEU.replace("</body>","body");
-                            TnEU = TnEU.replace("</hr>","hr");
+//                            String TnEU = detailedReport(dt);
+//                            TnEU = TnEU.replace("</body>","body");
+//                            TnEU = TnEU.replace("</hr>","hr");
                             emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='SteelBlue'>" + el.getText() + "</font></b></td><td >" + TnEU + "</td></tr>");
 
                         } else if (el.getText().contains("SUCCESS")) {
@@ -388,10 +387,10 @@ public class Main {
 
         /*emailContent.append( "<br/><br/>SUMMARY:<br/>" );
         emailContent.append( "<h3>Failures: " + failures + "</h3>" );
-        emailContent.append( "<h3>Running Jobs: " + isrunning + "</h3>" );
+        emailContent.append( "<h3>Running Jobs: " + isRunning + "</h3>" );
         emailContent.append( "<h3>Unstable jobs: " + unstable + "</h3>" );*/
-        emailContent.append("<br/><br/>ERRORS(if any):<br/><br>");
-        emailContent.append("<i>" + errorFooter + "</i><br/><br/>");
+//        emailContent.append("<br/><br/>ERRORS(if any):<br/><br>");
+//        emailContent.append("<i>" + errorFooter + "</i><br/><br/>");
         emailContent.append("-----------------------------------<br/><i>NOTE: To change the look of this report, edit the Main.java in this test report project.  To<br/>change the list of Jenkins jobs handled by this report, edit the DefinedTests.java .</i>");
 
     }
@@ -399,7 +398,7 @@ public class Main {
     public static String getLatestBuildNumber() {
         String buildNo = null;
         try {
-            url = new URL("http://" + jenkinsHostPort + "/job/UI_BuildFlow_Group1/lastBuild/api/xml");
+            url = new URL("http://" + jenkinsHostPort + "/job/UI_BuildFlow_Group3/lastBuild/api/xml");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -431,7 +430,7 @@ public class Main {
                     if (el.getName() == "building") {
                         if (el.getText() == "true") {
                             System.out.println("Found a running job.");
-                            isrunning += 1;
+                            isRunning += 1;
                             //emailContent.append( "<b>RUNNING</b>" );
                             break myloop; //break out of for loop
                         }
@@ -445,7 +444,6 @@ public class Main {
                             successful += 1;
                         }
                     }
-
                 }
             } catch (DocumentException e) {
                 e.printStackTrace();
@@ -453,67 +451,67 @@ public class Main {
         }
         emailContent.append("Success job(s)    : " + successful + "</br>");
         emailContent.append("Failed Job(s)       :" + failures + "</br>");
-        emailContent.append("Running Job(s)   :" + isrunning + "</br>");
+        emailContent.append("Running Job(s)   :" + isRunning + "</br>");
         emailContent.append("Unstable job(s)  : " + unstable + "</br>");
     }
 
-    public static void oldreportFormat() {
-        oldreport:
-        for (DefinedTests dt : DefinedTests.values()) {
-            //System.out.print( "Status \"" + dt.toString() + "\": " );
-            emailContent.append("Status \"" + dt.toString() + "\": ");
-            try {
-                url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
-
-            } catch (MalformedURLException e1) {
-                e1.printStackTrace();
-            }
-
-            try {
-                Document dom = new SAXReader().read(url);
-                @SuppressWarnings("unchecked")
-                List<Element> les = dom.getRootElement().elements(); //TODO deprecated way of doing this?
-                for (Element el : les) {
-
-                    // if job is currently running print status to report
-                    if (el.getName() == "building") {
-                        if (el.getText() == "true") {
-
-
-                            emailContent.append("<b>RUNNING</b>");
-                            break oldreport; //break out of for loop
-                        }
-                    }
-
-                    // get result status from XML
-                    //System.out.println( "Test name: " + el.getName() );
-                    if (el.getName() == "result") {
-
-                        if (el.getText().contains("FAILURE")) {
-
-                            emailContent.append("<b><font color='red'>" + el.getText() + "</font></b>");
-                            detailedReport(dt);
-                        } else if (el.getText().contains("UNSTABLE")) {
-
-                            emailContent.append("<b><font color='SteelBlue'>" + el.getText() + "</font></b>");
-                            detailedReport(dt);
-                        } else if (el.getText().contains("SUCCESS")) {
-                            emailContent.append("<b><font color='green'>" + el.getText() + "</font></b>");
-                        }
-                    }
-
-                }
-
-            } catch (DocumentException e) {
-
-                emailContent.append("<font color='red'>No status. There was an error reading status.</font>");
-                errorFooter.append("Test Error:\n" + e.getMessage() + "<br/><br/>");
-            }
-
-            emailContent.append("<br/>");
-
-        }
-
-
-    }
+//    public static void oldreportFormat() {
+//        oldreport:
+//        for (DefinedTests dt : DefinedTests.values()) {
+//            //System.out.print( "Status \"" + dt.toString() + "\": " );
+//            emailContent.append("Status \"" + dt.toString() + "\": ");
+//            try {
+//                url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
+//
+//            } catch (MalformedURLException e1) {
+//                e1.printStackTrace();
+//            }
+//
+//            try {
+//                Document dom = new SAXReader().read(url);
+//                @SuppressWarnings("unchecked")
+//                List<Element> les = dom.getRootElement().elements(); //TODO deprecated way of doing this?
+//                for (Element el : les) {
+//
+//                    // if job is currently running print status to report
+//                    if (el.getName() == "building") {
+//                        if (el.getText() == "true") {
+//
+//
+//                            emailContent.append("<b>RUNNING</b>");
+//                            break oldreport; //break out of for loop
+//                        }
+//                    }
+//
+//                    // get result status from XML
+//                    //System.out.println( "Test name: " + el.getName() );
+//                    if (el.getName() == "result") {
+//
+//                        if (el.getText().contains("FAILURE")) {
+//
+//                            emailContent.append("<b><font color='red'>" + el.getText() + "</font></b>");
+//                            detailedReport(dt);
+//                        } else if (el.getText().contains("UNSTABLE")) {
+//
+//                            emailContent.append("<b><font color='SteelBlue'>" + el.getText() + "</font></b>");
+//                            detailedReport(dt);
+//                        } else if (el.getText().contains("SUCCESS")) {
+//                            emailContent.append("<b><font color='green'>" + el.getText() + "</font></b>");
+//                        }
+//                    }
+//
+//                }
+//
+//            } catch (DocumentException e) {
+//
+//                emailContent.append("<font color='red'>No status. There was an error reading status.</font>");
+//                errorFooter.append("Test Error:\n" + e.getMessage() + "<br/><br/>");
+//            }
+//
+//            emailContent.append("<br/>");
+//
+//        }
+//
+//
+//    }
 }
