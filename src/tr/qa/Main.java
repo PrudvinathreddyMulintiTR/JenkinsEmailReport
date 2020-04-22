@@ -15,7 +15,7 @@ import org.dom4j.io.SAXReader;
 /**
  * To build this project, install the Maven M2E plugin for eclipse and import 
  * this project as an existing Maven project.
- * 
+ *
  * @author Jon Austen May 2013
  *
  */
@@ -24,15 +24,15 @@ public class Main {
 
     static String buildNumberFileName = "buildVerBamboo.txt";
     static String buildNumber = "1";
-    static String jenkinsHostPort = "pdxsasqa101.corp.ositax.com:8080";
-    static String targetHostPort = "pdxsasqa149.corp.ositax.com:6500";
-    static String testHostPort = "pdxsasqa149.corp.ositax.com:6500";
+    static String jenkinsHostPort = "http://c962stnapp.intqa.thomsonreuters.com:8080";
+    //    static String targetHostPort = "http://c962stnapp.intqa.thomsonreuters.com:6500";
+//    static String testHostPort = "http://c962stnapp.intqa.thomsonreuters.com:6500";
     static URL url,rep_URL;
     static int failures = 0;
     static int unstable = 0;
     static int isrunning = 0;
     static int successful = 0;
-    static String suiteTitle = "Jenkins Test Suite Report for Determination REST";
+    static String suiteTitle = "Jenkins Test Suite Report for UI Automation QA jobs";
     static StringBuilder emailContent = new StringBuilder();
     static StringBuilder errorFooter = new StringBuilder();
     static String releaseNumber = "DETC-R120";
@@ -50,7 +50,7 @@ public class Main {
             System.out.println("ERROR reading Maven HOSTPORT arg.  Need to pass HOSTPORT arg property to Maven job.");
         } else {
             System.out.println("Maven property HOSTPORT=" + System.getProperty("HOSTPORT"));
-            targetHostPort = System.getProperty("HOSTPORT");
+//            targetHostPort = System.getProperty("HOSTPORT");
         }
         System.out.println("Build number is: " + buildNumber);
 
@@ -58,18 +58,18 @@ public class Main {
 
     private static void sendEmail() {
         // Recipient's email ID needs to be mentioned.
-        String tophil = "philip.delorenzo@thomsonreuters.com";
-        String toJennifer = "JenniferPhillips1@thomsonreuters.com";
-        String tosowmya = "sowmya.purushotham@thomsonreuters.com";
-        String toroop = "roop.kaur@thomsonreuters.com";
-        String todave = "dave.ingham@thomsonreuters.com";
-        String tonaveen = "naveen.pothireddy@thomsonreuters.com";
-        String tosangeeta = "sangeeta.bhalki@thomsonreuters.com";
-        String tosandy = "sandra.seymour@thomsonreuters.com";
-        String tomatt = "matt.rau@thomsonreuters.com";
-        String tosrinath = "srinath.nernakanti@thomsonreuters.com";
-        String toqa = "IndirectTax.productQA@thomsonreuters.com";
-        String toqa2 = "IndirectTaxProductDevelopment-HyderabadQA@thomsonreuters.com";
+        String toPrudvi = "prudvinathreddy.mulinti@thomsonreuters.com";
+//        String toJennifer = "JenniferPhillips1@thomsonreuters.com";
+//        String tosowmya = "sowmya.purushotham@thomsonreuters.com";
+//        String toroop = "roop.kaur@thomsonreuters.com";
+//        String todave = "dave.ingham@thomsonreuters.com";
+//        String tonaveen = "naveen.pothireddy@thomsonreuters.com";
+//        String tosangeeta = "sangeeta.bhalki@thomsonreuters.com";
+//        String tosandy = "sandra.seymour@thomsonreuters.com";
+//        String tomatt = "matt.rau@thomsonreuters.com";
+//        String tosrinath = "srinath.nernakanti@thomsonreuters.com";
+//        String toqa = "IndirectTax.productQA@thomsonreuters.com";
+//        String toqa2 = "IndirectTaxProductDevelopment-HyderabadQA@thomsonreuters.com";
 
         // Sender's email ID needs to be mentioned
         String from = "qa-noreply@thomsonreuters.com";
@@ -97,17 +97,15 @@ public class Main {
             message.setFrom(new InternetAddress(from));
 
             // Set To: header field of the header.
-            // message.addRecipient( Message.RecipientType.TO, new InternetAddress( tophil ) );
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toJennifer));
-            // message.addRecipient( Message.RecipientType.TO, new InternetAddress( tosowmya ) );
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toroop));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tonaveen));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tosangeeta));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tosandy));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tosrinath));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tomatt));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toqa));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toqa2));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toPrudvi));
+//            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toroop));
+//            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tonaveen));
+//            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tosangeeta));
+//            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tosandy));
+//            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tosrinath));
+//            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tomatt));
+//            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toqa));
+//            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toqa2));
             // Set Subject: header field
             message.setSubject(suiteTitle);
 
@@ -116,7 +114,7 @@ public class Main {
             Multipart multipart = new MimeMultipart("alternative");
 
             MimeBodyPart htmlPart = new MimeBodyPart();
-           // String htmlContent = "<html><h1>" + suiteTitle + "</h1><p>" + emailContent.toString() + "</p></html>";
+            // String htmlContent = "<html><h1>" + suiteTitle + "</h1><p>" + emailContent.toString() + "</p></html>";
             String htmlContent = "<html><p>" + emailContent.toString() + "</p></html>";
             htmlPart.setContent(htmlContent, "text/html");
 
@@ -179,8 +177,8 @@ public class Main {
     private static void buildEmailContent_old() {
         emailContent.append("Release number: " + releaseNumber + "<br/>");
         emailContent.append("Build number: " + getLatestBuildNumberFromBamboo(releaseNumber) + "<br/>");
-        emailContent.append("Test target: http://" + testHostPort + "<br/>");
-        emailContent.append("Aggregate report: http://pdxsasqa101.corp.ositax.com:8080 <br/>--------------------------<br/>");
+//        emailContent.append("Test target: http://" + testHostPort + "<br/>");
+        emailContent.append("Aggregate report: http://http://c962stnapp.intqa.thomsonreuters.com:8080 <br/>--------------------------<br/>");
 
         myloop:
         for (DefinedTests dt : DefinedTests.values()) {
@@ -308,9 +306,9 @@ public class Main {
     private static void buildEmailContent() {
         int counter = 1;
         emailContent.append("Hi Team, " + "<br/>" + "</br>");
-        emailContent.append("Please find below the summary & detailed DET Rest Automation Jobs execution report." + "<br/>" + "</br>");
+        emailContent.append("Please find below the summary & detailed UI Automation Jobs execution report." + "<br/>" + "</br>");
         emailContent.append("<b>Build Number:  </b>" + getLatestBuildNumber() + "<br/>");
-        emailContent.append("<b>Test System: </b> http://" + testHostPort + "<br/>");
+//        emailContent.append("<b>Test System: </b> http://" + testHostPort + "<br/>");
         emailContent.append("<br/>");
         emailContent.append("<b>Overall Summary: </b>" + "</br>");
         overallSummary();
@@ -321,72 +319,72 @@ public class Main {
 //            emailContent.append("<b>Individual Job Report:</b>" + "</br>");
 //            oldreportFormat();
         }
-            emailContent.append("<b>Individual Job Report:</b>" + "</br>");
-            emailContent.append("<style> table ,th, td {border: 1px solid black;border-collapse: collapse;} th, td {padding: 15px;} th{background-color: #ff9900;}</style>");
-            emailContent.append("<table style='width:auto' ><tr><th>S.No</th><th >RestJob Name</th><th >Status</th> <th >Failure Details (if any)</th></tr>");
-            myloop:
-            for (DefinedTests dt : DefinedTests.values()) {
-                try {
-                    url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
-                    // System.out.println("buildNumberFileHandling status against url: " + url.toString() );
-                } catch (MalformedURLException e1) {
-                    e1.printStackTrace();
-                }
+        emailContent.append("<b>Individual Job Report:</b>" + "</br>");
+        emailContent.append("<style> table ,th, td {border: 1px solid black;border-collapse: collapse;} th, td {padding: 15px;} th{background-color: #ff9900;}</style>");
+        emailContent.append("<table style='width:auto' ><tr><th>S.No</th><th >RestJob Name</th><th >Status</th> <th >Failure Details (if any)</th></tr>");
+        myloop:
+        for (DefinedTests dt : DefinedTests.values()) {
+            try {
+                url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
+                // System.out.println("buildNumberFileHandling status against url: " + url.toString() );
+            } catch (MalformedURLException e1) {
+                e1.printStackTrace();
+            }
 
-                try {
-                    Document dom = new SAXReader().read(url);
-                    @SuppressWarnings("unchecked")
-                    List<Element> les = dom.getRootElement().elements(); //TODO deprecated way of doing this?
-                    for (Element el : les) {
+            try {
+                Document dom = new SAXReader().read(url);
+                @SuppressWarnings("unchecked")
+                List<Element> les = dom.getRootElement().elements(); //TODO deprecated way of doing this?
+                for (Element el : les) {
 
 
-                        if (el.getName() == "building") {
-                            if (el.getText() == "true") {
-                                System.out.println("Found a running job.");
-                                // isrunning += 1;
-                                emailContent.append("<b>RUNNING</b>");
-                                break myloop; //break out of for loop
-                            }
+                    if (el.getName() == "building") {
+                        if (el.getText() == "true") {
+                            System.out.println("Found a running job.");
+                            // isrunning += 1;
+                            emailContent.append("<b>RUNNING</b>");
+                            break myloop; //break out of for loop
                         }
-
-
-                        if (el.getName() == "result") {
-                            // System.out.println( el.getText() );
-                            if (el.getText().contains("FAILURE")) {
-                                // failures += 1;
-
-                                String TnEF = detailedReport(dt);
-                                TnEF = TnEF.replace("</body>","body");
-                                TnEF = TnEF.replace("</hr>","hr");
-                                emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b> </td><td><b><font color='red'>" + el.getText() + "</font></b></td><td >" + TnEF + "</td></tr>");
-                                //detailedReport(dt);
-                            } else if (el.getText().contains("UNSTABLE")) {
-                                // unstable += 1;
-//                            emailContent.append( "<b><font color='SteelBlue'>" + el.getText() + "</font></b>" );
-                                String TnEU = detailedReport(dt);
-                                TnEU = TnEU.replace("</body>","body");
-                                TnEU = TnEU.replace("</hr>","hr");
-                                emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='SteelBlue'>" + el.getText() + "</font></b></td><td >" + TnEU + "</td></tr>");
-
-                            } else if (el.getText().contains("SUCCESS")) {
-                                //emailContent.append( "<b><font color='green'>" + el.getText() + "</font></b>" );
-                                emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='green'>" + el.getText() + "</font></b></td><td ></td></tr>");
-                            }
-                        }
-
                     }
 
-                } catch (DocumentException e) {
-                    //System.out.println( "No status. There was an error reading status." );
-                    emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='red'>No status. There was an error reading status.</font></b></td></tr>");
-                    errorFooter.append("Test Error:\n" + e.getMessage() + "<br/><br/>");
+
+                    if (el.getName() == "result") {
+                        // System.out.println( el.getText() );
+                        if (el.getText().contains("FAILURE")) {
+                            // failures += 1;
+
+                            String TnEF = detailedReport(dt);
+                            TnEF = TnEF.replace("</body>","body");
+                            TnEF = TnEF.replace("</hr>","hr");
+                            emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b> </td><td><b><font color='red'>" + el.getText() + "</font></b></td><td >" + TnEF + "</td></tr>");
+                            //detailedReport(dt);
+                        } else if (el.getText().contains("UNSTABLE")) {
+                            // unstable += 1;
+//                            emailContent.append( "<b><font color='SteelBlue'>" + el.getText() + "</font></b>" );
+                            String TnEU = detailedReport(dt);
+                            TnEU = TnEU.replace("</body>","body");
+                            TnEU = TnEU.replace("</hr>","hr");
+                            emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='SteelBlue'>" + el.getText() + "</font></b></td><td >" + TnEU + "</td></tr>");
+
+                        } else if (el.getText().contains("SUCCESS")) {
+                            //emailContent.append( "<b><font color='green'>" + el.getText() + "</font></b>" );
+                            emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='green'>" + el.getText() + "</font></b></td><td ></td></tr>");
+                        }
+                    }
+
                 }
 
-                emailContent.append("<br/>");
-                counter++;
-
+            } catch (DocumentException e) {
+                //System.out.println( "No status. There was an error reading status." );
+                emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='red'>No status. There was an error reading status.</font></b></td></tr>");
+                errorFooter.append("Test Error:\n" + e.getMessage() + "<br/><br/>");
             }
-            emailContent.append("</table>");
+
+            emailContent.append("<br/>");
+            counter++;
+
+        }
+        emailContent.append("</table>");
 
         /*emailContent.append( "<br/><br/>SUMMARY:<br/>" );
         emailContent.append( "<h3>Failures: " + failures + "</h3>" );
@@ -401,7 +399,7 @@ public class Main {
     public static String getLatestBuildNumber() {
         String buildNo = null;
         try {
-            url = new URL("http://" + jenkinsHostPort + "/job/Rest_Build Flow/lastBuild/api/xml");
+            url = new URL("http://" + jenkinsHostPort + "/job/UI_BuildFlow_Group1/lastBuild/api/xml");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -519,4 +517,3 @@ public class Main {
 
     }
 }
-
