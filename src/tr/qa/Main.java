@@ -355,7 +355,7 @@ public class Main {
 //                            String TnEF = detailedReport(dt);
 //                            TnEF = TnEF.replace("</body>","body");
 //                            TnEF = TnEF.replace("</hr>","hr");
-                            emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b> </td><td><b><font color='red'>" + el.getText() + "</font></b></td><td >" + TnEF + "</td></tr>");
+                            emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b> </td><td><b><font color='red'>" + el.getText() + "</font></b></td></tr>");
                             //detailedReport(dt);
                         } else if (el.getText().contains("UNSTABLE")) {
                             // unstable += 1;
@@ -363,7 +363,7 @@ public class Main {
 //                            String TnEU = detailedReport(dt);
 //                            TnEU = TnEU.replace("</body>","body");
 //                            TnEU = TnEU.replace("</hr>","hr");
-                            emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='SteelBlue'>" + el.getText() + "</font></b></td><td >" + TnEU + "</td></tr>");
+                            emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='SteelBlue'>" + el.getText() + "</font></b></td></tr>");
 
                         } else if (el.getText().contains("SUCCESS")) {
                             //emailContent.append( "<b><font color='green'>" + el.getText() + "</font></b>" );
