@@ -38,6 +38,9 @@ public class Main {
 //    static String releaseNumber = "DETC-R120";
 
     public static void main(String[] args) throws Exception {
+//        Arrays.stream(args).forEach(System.out::println);
+        String environment = args[0];
+        System.out.println("environment: "+environment);
         //buildNumber = getLatestBuildNumberFromBamboo(releaseNumber);
         buildNumber = getLatestBuildNumber();
         //getTarget();
@@ -45,31 +48,21 @@ public class Main {
         sendEmail();
     }
 
-    public static void getTarget() {
-        if (System.getProperty("HOSTPORT") == null) {
-            System.out.println("ERROR reading Maven HOSTPORT arg.  Need to pass HOSTPORT arg property to Maven job.");
-        } else {
-            System.out.println("Maven property HOSTPORT=" + System.getProperty("HOSTPORT"));
-//            targetHostPort = System.getProperty("HOSTPORT");
-        }
-        System.out.println("Build number is: " + buildNumber);
-
-    }
+//    public static void getTarget() {
+//        if (System.getProperty("HOSTPORT") == null) {
+//            System.out.println("ERROR reading Maven HOSTPORT arg.  Need to pass HOSTPORT arg property to Maven job.");
+//        } else {
+//            System.out.println("Maven property HOSTPORT=" + System.getProperty("HOSTPORT"));
+////            targetHostPort = System.getProperty("HOSTPORT");
+//        }
+//        System.out.println("Build number is: " + buildNumber);
+//
+//    }
 
     private static void sendEmail() {
         // Recipient's email ID needs to be mentioned.
         String toPrudvi = "prudvinathreddy.mulinti@thomsonreuters.com";
-//        String toJennifer = "JenniferPhillips1@thomsonreuters.com";
-//        String tosowmya = "sowmya.purushotham@thomsonreuters.com";
-//        String toroop = "roop.kaur@thomsonreuters.com";
-//        String todave = "dave.ingham@thomsonreuters.com";
 //        String tonaveen = "naveen.pothireddy@thomsonreuters.com";
-//        String tosangeeta = "sangeeta.bhalki@thomsonreuters.com";
-//        String tosandy = "sandra.seymour@thomsonreuters.com";
-//        String tomatt = "matt.rau@thomsonreuters.com";
-//        String tosrinath = "srinath.nernakanti@thomsonreuters.com";
-//        String toqa = "IndirectTax.productQA@thomsonreuters.com";
-//        String toqa2 = "IndirectTaxProductDevelopment-HyderabadQA@thomsonreuters.com";
 
         // Sender's email ID needs to be mentioned
         String from = "qa-noreply@thomsonreuters.com";
