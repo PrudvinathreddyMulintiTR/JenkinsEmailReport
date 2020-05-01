@@ -44,8 +44,8 @@ public class Main {
         //buildNumber = getLatestBuildNumberFromBamboo(releaseNumber);
         buildNumber = getLatestBuildNumber();
         //getTarget();
-        buildEmailContent();
-        sendEmail();
+        buildEmailContent(environment);
+//        sendEmail();
     }
 
 //    public static void getTarget() {
@@ -294,7 +294,7 @@ public class Main {
         return FinalRep;
     }
 
-    private static void buildEmailContent() {
+    private static void buildEmailContent(String environment) {
         int counter = 1;
         emailContent.append("Hi Team, " + "<br/>" + "</br>");
         emailContent.append("Please find below the summary & detailed UI Automation Jobs execution report." + "<br/>" + "</br>");
@@ -313,69 +313,137 @@ public class Main {
         emailContent.append("<b>Individual Job Report:</b>" + "</br>");
         emailContent.append("<style> table ,th, td {border: 1px solid black;border-collapse: collapse;} th, td {padding: 15px;} th{background-color: #ff9900;}</style>");
         emailContent.append("<table style='width:auto' ><tr><th>S.No</th><th >RestJob Name</th><th >Status</th></tr>");
-        myloop:
-        for (DefinedTests dt : DefinedTests.values()) {
-            try {
-                url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
-                // System.out.println("buildNumberFileHandling status against url: " + url.toString() );
-            } catch (MalformedURLException e1) {
-                e1.printStackTrace();
-            }
 
-            try {
-                Document dom = new SAXReader().read(url);
-                @SuppressWarnings("unchecked")
-                List<Element> les = dom.getRootElement().elements(); //TODO deprecated way of doing this?
-                for (Element el : les) {
+        if(environment == "qa"){
+            myloop:
+            for (DefinedTests dt : DefinedTests.values()) {
+                try {
+                    url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
+                    // System.out.println("buildNumberFileHandling status against url: " + url.toString() );
+                } catch (MalformedURLException e1) {
+                    e1.printStackTrace();
+                }
+
+                try {
+                    Document dom = new SAXReader().read(url);
+                    @SuppressWarnings("unchecked")
+                    List<Element> les = dom.getRootElement().elements(); //TODO deprecated way of doing this?
+                    for (Element el : les) {
 
 
-                    if (el.getName() == "building") {
-                        if (el.getText() == "true") {
-                            System.out.println("Found a running job.");
-                            // isRunning += 1;
-                            emailContent.append("<b>RUNNING</b>");
-                            break myloop; //break out of for loop
+                        if (el.getName() == "building") {
+                            if (el.getText() == "true") {
+                                System.out.println("Found a running job.");
+                                // isRunning += 1;
+                                emailContent.append("<b>RUNNING</b>");
+                                break myloop; //break out of for loop
+                            }
                         }
-                    }
 
 
-                    if (el.getName() == "result") {
-                        // System.out.println( el.getText() );
-                        if (el.getText().contains("FAILURE")) {
-                             failures += 1;
+                        if (el.getName() == "result") {
+                            // System.out.println( el.getText() );
+                            if (el.getText().contains("FAILURE")) {
+                                failures += 1;
 
 //                            TODO: Need to add detailed report.
 //                            String TnEF = detailedReport(dt);
 //                            TnEF = TnEF.replace("</body>","body");
 //                            TnEF = TnEF.replace("</hr>","hr");
-                            emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b> </td><td><b><font color='red'>" + el.getText() + "</font></b></td></tr>");
-                            //detailedReport(dt);
-                        } else if (el.getText().contains("UNSTABLE")) {
-                             unstable += 1;
+                                emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b> </td><td><b><font color='red'>" + el.getText() + "</font></b></td></tr>");
+                                //detailedReport(dt);
+                            } else if (el.getText().contains("UNSTABLE")) {
+                                unstable += 1;
 //                            emailContent.append( "<b><font color='SteelBlue'>" + el.getText() + "</font></b>" );
 //                            String TnEU = detailedReport(dt);
 //                            TnEU = TnEU.replace("</body>","body");
 //                            TnEU = TnEU.replace("</hr>","hr");
-                            emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='SteelBlue'>" + el.getText() + "</font></b></td></tr>");
+                                emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='SteelBlue'>" + el.getText() + "</font></b></td></tr>");
 
-                        } else if (el.getText().contains("SUCCESS")) {
-                            System.out.print("result:"+ el.getText());
-                            //emailContent.append( "<b><font color='green'>" + el.getText() + "</font></b>" );
-                            emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='green'>" + el.getText() + "</font></b></td></tr>");
+                            } else if (el.getText().contains("SUCCESS")) {
+                                System.out.print("result:"+ el.getText());
+                                //emailContent.append( "<b><font color='green'>" + el.getText() + "</font></b>" );
+                                emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='green'>" + el.getText() + "</font></b></td></tr>");
+                            }
                         }
+
                     }
 
+                } catch (DocumentException e) {
+                    //System.out.println( "No status. There was an error reading status." );
+                    emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='red'>No status. There was an error reading status.</font></b></td></tr>");
+                    errorFooter.append("Test Error:\n" + e.getMessage() + "<br/><br/>");
                 }
 
-            } catch (DocumentException e) {
-                //System.out.println( "No status. There was an error reading status." );
-                emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='red'>No status. There was an error reading status.</font></b></td></tr>");
-                errorFooter.append("Test Error:\n" + e.getMessage() + "<br/><br/>");
+                emailContent.append("<br/>");
+                counter++;
+
             }
+        }else if(environment == "sat"){
+            myloop:
+            for (SatTests dt : SatTests.values()) {
+                try {
+                    url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
+                    // System.out.println("buildNumberFileHandling status against url: " + url.toString() );
+                } catch (MalformedURLException e1) {
+                    e1.printStackTrace();
+                }
 
-            emailContent.append("<br/>");
-            counter++;
+                try {
+                    Document dom = new SAXReader().read(url);
+                    @SuppressWarnings("unchecked")
+                    List<Element> les = dom.getRootElement().elements(); //TODO deprecated way of doing this?
+                    for (Element el : les) {
 
+
+                        if (el.getName() == "building") {
+                            if (el.getText() == "true") {
+                                System.out.println("Found a running job.");
+                                // isRunning += 1;
+                                emailContent.append("<b>RUNNING</b>");
+                                break myloop; //break out of for loop
+                            }
+                        }
+
+
+                        if (el.getName() == "result") {
+                            // System.out.println( el.getText() );
+                            if (el.getText().contains("FAILURE")) {
+                                failures += 1;
+
+//                            TODO: Need to add detailed report.
+//                            String TnEF = detailedReport(dt);
+//                            TnEF = TnEF.replace("</body>","body");
+//                            TnEF = TnEF.replace("</hr>","hr");
+                                emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b> </td><td><b><font color='red'>" + el.getText() + "</font></b></td></tr>");
+                                //detailedReport(dt);
+                            } else if (el.getText().contains("UNSTABLE")) {
+                                unstable += 1;
+//                            emailContent.append( "<b><font color='SteelBlue'>" + el.getText() + "</font></b>" );
+//                            String TnEU = detailedReport(dt);
+//                            TnEU = TnEU.replace("</body>","body");
+//                            TnEU = TnEU.replace("</hr>","hr");
+                                emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='SteelBlue'>" + el.getText() + "</font></b></td></tr>");
+
+                            } else if (el.getText().contains("SUCCESS")) {
+                                System.out.print("result:"+ el.getText());
+                                //emailContent.append( "<b><font color='green'>" + el.getText() + "</font></b>" );
+                                emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='green'>" + el.getText() + "</font></b></td></tr>");
+                            }
+                        }
+
+                    }
+
+                } catch (DocumentException e) {
+                    //System.out.println( "No status. There was an error reading status." );
+                    emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='red'>No status. There was an error reading status.</font></b></td></tr>");
+                    errorFooter.append("Test Error:\n" + e.getMessage() + "<br/><br/>");
+                }
+
+                emailContent.append("<br/>");
+                counter++;
+
+            }
         }
         emailContent.append("</table>");
 

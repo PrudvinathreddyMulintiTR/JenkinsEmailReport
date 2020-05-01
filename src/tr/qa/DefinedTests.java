@@ -65,4 +65,4 @@ public enum DefinedTests {
 		return test;
 	}
 
-}
+};
