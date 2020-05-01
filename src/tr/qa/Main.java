@@ -368,7 +368,7 @@ public class Main {
                         } else if (el.getText().contains("SUCCESS")) {
                             System.out.print("result:"+ el.getText());
                             //emailContent.append( "<b><font color='green'>" + el.getText() + "</font></b>" );
-                            emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='green'>" + el.getText() + "</font></b></td><td ></td></tr>");
+                            emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b></td><td><b><font color='green'>" + el.getText() + "</font></b></td></tr>");
                         }
                     }
 
