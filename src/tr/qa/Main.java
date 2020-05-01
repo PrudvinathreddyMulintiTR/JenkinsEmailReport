@@ -24,7 +24,7 @@ public class Main {
 
 //    static String buildNumberFileName = "buildVerBamboo.txt";
     static String buildNumber = "1";
-    static String jenkinsHostPort = "http://c962stnapp.intqa.thomsonreuters.com:8080";
+    static String jenkinsHostPort = "c962stnapp.intqa.thomsonreuters.com:8080";
     //    static String targetHostPort = "http://c962stnapp.intqa.thomsonreuters.com:6500";
 //    static String testHostPort = "http://c962stnapp.intqa.thomsonreuters.com:6500";
     static URL url,rep_URL;
@@ -350,7 +350,7 @@ public class Main {
                         // System.out.println( el.getText() );
                         if (el.getText().contains("FAILURE")) {
                             System.out.println("result:"+ el.getText());
-                            // failures += 1;
+                             failures += 1;
 
 //                            TODO: Need to add detailed report.
 //                            String TnEF = detailedReport(dt);
@@ -360,7 +360,7 @@ public class Main {
                             //detailedReport(dt);
                         } else if (el.getText().contains("UNSTABLE")) {
                             System.out.println("result:"+ el.getText());
-                            // unstable += 1;
+                             unstable += 1;
 //                            emailContent.append( "<b><font color='SteelBlue'>" + el.getText() + "</font></b>" );
 //                            String TnEU = detailedReport(dt);
 //                            TnEU = TnEU.replace("</body>","body");
@@ -401,7 +401,7 @@ public class Main {
     public static String getLatestBuildNumber() {
         String buildNo = null;
         try {
-            url = new URL("http://" + jenkinsHostPort + "/job/UI_BuildFlow_Group3/lastBuild/api/xml");
+            url = new URL("http://" + jenkinsHostPort + "/job/QA_BuildFlow/lastBuild/api/xml");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
