@@ -319,7 +319,7 @@ public class Main {
 //        }
         emailContent.append("<b>Individual Job Report:</b>" + "</br>");
         emailContent.append("<style> table ,th, td {border: 1px solid black;border-collapse: collapse;} th, td {padding: 15px;} th{background-color: #ff9900;}</style>");
-        emailContent.append("<table style='width:auto' ><tr><th>S.No</th><th >RestJob Name</th><th >Status</th> <th >Failure Details (if any)</th></tr>");
+        emailContent.append("<table style='width:auto' ><tr><th>S.No</th><th >RestJob Name</th><th >Status</th></tr>");
         myloop:
         for (DefinedTests dt : DefinedTests.values()) {
             try {
@@ -349,7 +349,6 @@ public class Main {
                     if (el.getName() == "result") {
                         // System.out.println( el.getText() );
                         if (el.getText().contains("FAILURE")) {
-                            System.out.println("result:"+ el.getText());
                              failures += 1;
 
 //                            TODO: Need to add detailed report.
@@ -359,7 +358,6 @@ public class Main {
                             emailContent.append("<tr><td>" + counter + "</td><td><b>" + dt.toString() + "</b> </td><td><b><font color='red'>" + el.getText() + "</font></b></td></tr>");
                             //detailedReport(dt);
                         } else if (el.getText().contains("UNSTABLE")) {
-                            System.out.println("result:"+ el.getText());
                              unstable += 1;
 //                            emailContent.append( "<b><font color='SteelBlue'>" + el.getText() + "</font></b>" );
 //                            String TnEU = detailedReport(dt);
