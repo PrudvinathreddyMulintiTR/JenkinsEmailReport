@@ -268,6 +268,8 @@ public class Main {
         emailContent.append( "<h3>Unstable jobs: " + unstable + "</h3>" );*/
         emailContent.append("<br/><br/>ERRORS(if any):<br/><br>");
         emailContent.append("<i>" + errorFooter + "</i><br/><br/>");
+        emailContent.append("<br/><br/>Complete Execution results can be found here:<br/><br>");
+        emailContent.append("<i>http://idt-reportportal-dev.int.thomsonreuters.com:8080/ui/</i><br/><br/>");
         emailContent.append("-----------------------------------<br/><i>NOTE: To change the look of this report, edit the Main.java in this test report project.  To<br/>change the list of Jenkins jobs handled by this report, edit the DefinedTests.java .</i>");
 
     }
