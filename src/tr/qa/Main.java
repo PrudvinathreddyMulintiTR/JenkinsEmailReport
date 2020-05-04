@@ -43,7 +43,7 @@ public class Main {
         buildNumber = getLatestBuildNumber();
         //getTarget();
         buildEmailContent(environment.toString().trim());
-//        sendEmail();
+        sendEmail();
     }
 
 //    public static void getTarget() {
@@ -308,14 +308,8 @@ public class Main {
         emailContent.append("<b>Individual Job Report:</b>" + "</br>");
         emailContent.append("<style> table ,th, td {border: 1px solid black;border-collapse: collapse;} th, td {padding: 15px;} th{background-color: #ff9900;}</style>");
         emailContent.append("<table style='width:auto' ><tr><th>S.No</th><th >RestJob Name</th><th >Status</th></tr>");
-        if(environment == "qa"){
-            System.out.println("Yes");
-        }else{
-            System.out.println(environment.equals("qa"));
-            System.out.println(environment);
-        }
         myloop:
-        if(environment == "qa"){
+        if(environment.equals("qa")){
             for (DefinedTests dt : DefinedTests.values()) {
                 try {
                     url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
@@ -476,7 +470,7 @@ public class Main {
 
     public static void overallSummary(String environment) {
         myloop:
-        if(environment == "qa"){
+        if(environment.equals("qa")){
             for (DefinedTests dt : DefinedTests.values()) {
                 try {
                     url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
