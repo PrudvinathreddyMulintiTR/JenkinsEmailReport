@@ -42,7 +42,7 @@ public class Main {
         //buildNumber = getLatestBuildNumberFromBamboo(releaseNumber);
         buildNumber = getLatestBuildNumber();
         //getTarget();
-        buildEmailContent(environment.trim());
+        buildEmailContent(environment.toString().trim());
 //        sendEmail();
     }
 
