@@ -15,9 +15,8 @@ import org.dom4j.io.SAXReader;
 /**
  * To build this project, install the Maven M2E plugin for eclipse and import 
  * this project as an existing Maven project.
- *
  * @author Jon Austen May 2013
- *
+ * modifiedBy: Prudvinath Reddy Mulinti, May 2020.
  */
 
 public class Main {
@@ -38,14 +37,13 @@ public class Main {
 //    static String releaseNumber = "DETC-R120";
 
     public static void main(String[] args) throws Exception {
-//        Arrays.stream(args).forEach(System.out::println);
         String environment = args[0];
         System.out.println("environment: "+environment);
         //buildNumber = getLatestBuildNumberFromBamboo(releaseNumber);
         buildNumber = getLatestBuildNumber();
         //getTarget();
         buildEmailContent(environment.trim());
-        sendEmail();
+//        sendEmail();
     }
 
 //    public static void getTarget() {
@@ -91,10 +89,6 @@ public class Main {
 
             // Set To: header field of the header.
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(toPrudvi));
-//            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toroop));
-//            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tonaveen));
-//            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tosangeeta));
-//            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tosandy));
 //            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tosrinath));
 //            message.addRecipient(Message.RecipientType.TO, new InternetAddress(tomatt));
 //            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toqa));
@@ -124,43 +118,43 @@ public class Main {
 
     }
 
-    //needs an annotated suppress warning here but I don't know which one it needs
-    private static String getLatestBuildNumberFromBamboo(String release) {
-        // more info:  http://dom4j.sourceforge.net/dom4j-1.6.1/apidocs/org/dom4j/Attribute.html
-        String returnVal = "0";
-        try {
-            url = new URL("http://bamboo.corp.ositax.com:8085/rest/api/latest/result/" + release + "/latest");
-            System.out.println("getLatestBuildNumberFromBamboo with against url: " + url.toString());
-            Document dom = new SAXReader().read(url);
-            Element el = dom.getRootElement();
-            returnVal = el.attribute("number").getValue();
-            System.out.println("Latest version found:" + returnVal);
-        } catch (MalformedURLException e1) {
-            e1.printStackTrace();
-        } catch (DocumentException e2) {
-            e2.printStackTrace();
-        }
-        return returnVal;
-    }
+//    //needs an annotated suppress warning here but I don't know which one it needs
+//    private static String getLatestBuildNumberFromBamboo(String release) {
+//        // more info:  http://dom4j.sourceforge.net/dom4j-1.6.1/apidocs/org/dom4j/Attribute.html
+//        String returnVal = "0";
+//        try {
+//            url = new URL("http://bamboo.corp.ositax.com:8085/rest/api/latest/result/" + release + "/latest");
+//            System.out.println("getLatestBuildNumberFromBamboo with against url: " + url.toString());
+//            Document dom = new SAXReader().read(url);
+//            Element el = dom.getRootElement();
+//            returnVal = el.attribute("number").getValue();
+//            System.out.println("Latest version found:" + returnVal);
+//        } catch (MalformedURLException e1) {
+//            e1.printStackTrace();
+//        } catch (DocumentException e2) {
+//            e2.printStackTrace();
+//        }
+//        return returnVal;
+//    }
 
-    //needs an annotated suppress warning here but I don't know which one it needs
-    private static String getLatestBuildNumberFromTarget(String release) {
-        // more info:  http://dom4j.sourceforge.net/dom4j-1.6.1/apidocs/org/dom4j/Attribute.html
-        String returnVal2 = "0";
-        try {
-            url = new URL("http://pdxsasqa149.corp.ositax.com:6500/sabrix/versioninfo");
-            System.out.println("getLatestBuildNumberFromTarget with against url: " + url.toString());
-            Document dom = new SAXReader().read(url);
-            Element el = dom.getRootElement();
-            returnVal2 = el.attribute("<RUNNING_VERSION>").getValue();
-            System.out.println("Deployed version: " + returnVal2);
-        } catch (MalformedURLException e1) {
-            e1.printStackTrace();
-        } catch (DocumentException e2) {
-            e2.printStackTrace();
-        }
-        return returnVal2;
-    }
+//    //needs an annotated suppress warning here but I don't know which one it needs
+//    private static String getLatestBuildNumberFromTarget(String release) {
+//        // more info:  http://dom4j.sourceforge.net/dom4j-1.6.1/apidocs/org/dom4j/Attribute.html
+//        String returnVal2 = "0";
+//        try {
+//            url = new URL("http://pdxsasqa149.corp.ositax.com:6500/sabrix/versioninfo");
+//            System.out.println("getLatestBuildNumberFromTarget with against url: " + url.toString());
+//            Document dom = new SAXReader().read(url);
+//            Element el = dom.getRootElement();
+//            returnVal2 = el.attribute("<RUNNING_VERSION>").getValue();
+//            System.out.println("Deployed version: " + returnVal2);
+//        } catch (MalformedURLException e1) {
+//            e1.printStackTrace();
+//        } catch (DocumentException e2) {
+//            e2.printStackTrace();
+//        }
+//        return returnVal2;
+//    }
 
 
     //gets build number from target system
@@ -313,6 +307,12 @@ public class Main {
         emailContent.append("<b>Individual Job Report:</b>" + "</br>");
         emailContent.append("<style> table ,th, td {border: 1px solid black;border-collapse: collapse;} th, td {padding: 15px;} th{background-color: #ff9900;}</style>");
         emailContent.append("<table style='width:auto' ><tr><th>S.No</th><th >RestJob Name</th><th >Status</th></tr>");
+        if(environment == "qa"){
+            System.out.println("Yes");
+        }else{
+            System.out.println("No");
+            System.out.println(environment);
+        }
         myloop:
         if(environment == "qa"){
             for (DefinedTests dt : DefinedTests.values()) {
