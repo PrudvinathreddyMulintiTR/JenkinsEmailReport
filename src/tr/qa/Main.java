@@ -31,7 +31,7 @@ public class Main {
     static int unstable = 0;
     static int isRunning = 0;
     static int successful = 0;
-    static String suiteTitle = "Jenkins Test Suite Report for UI Automation QA jobs";
+    static String suiteTitle = "Jenkins Test Suite Report for UI Automation";
     static StringBuilder emailContent = new StringBuilder();
     static StringBuilder errorFooter = new StringBuilder();
 //    static String releaseNumber = "DETC-R120";
@@ -42,8 +42,8 @@ public class Main {
         //buildNumber = getLatestBuildNumberFromBamboo(releaseNumber);
         buildNumber = getLatestBuildNumber();
         //getTarget();
-        buildEmailContent(environment.toString().trim());
-        sendEmail();
+        buildEmailContent(environment);
+        sendEmail(environment);
     }
 
 //    public static void getTarget() {
@@ -57,7 +57,7 @@ public class Main {
 //
 //    }
 
-    private static void sendEmail() {
+    private static void sendEmail(String environment) {
         // Recipient's email ID needs to be mentioned.
         String toPrudvi = "prudvinathreddy.mulinti@thomsonreuters.com";
 //        String tonaveen = "naveen.pothireddy@thomsonreuters.com";
@@ -94,7 +94,7 @@ public class Main {
 //            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toqa));
 //            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toqa2));
             // Set Subject: header field
-            message.setSubject(suiteTitle);
+            message.setSubject(suiteTitle+" "+environment+" jobs");
 
             // Now set the actual message
             //message.setText( emailContent );
@@ -506,7 +506,7 @@ public class Main {
                 }
             }
         }
-        else if(environment == "sat"){
+        else{
             for (SatTests dt : SatTests.values()) {
                 try {
                     url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
