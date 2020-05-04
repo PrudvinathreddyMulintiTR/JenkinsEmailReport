@@ -94,7 +94,7 @@ public class Main {
 //            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toqa));
 //            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toqa2));
             // Set Subject: header field
-            message.setSubject(suiteTitle+" "+environment+" jobs");
+            message.setSubject(suiteTitle+" "+environment.toUpperCase()+" jobs");
 
             // Now set the actual message
             //message.setText( emailContent );
