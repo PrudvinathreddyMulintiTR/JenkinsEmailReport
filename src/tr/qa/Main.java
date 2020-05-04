@@ -44,7 +44,7 @@ public class Main {
         //buildNumber = getLatestBuildNumberFromBamboo(releaseNumber);
         buildNumber = getLatestBuildNumber();
         //getTarget();
-        buildEmailContent(environment);
+        buildEmailContent(environment.trim());
         sendEmail();
     }
 
@@ -302,7 +302,7 @@ public class Main {
 //        emailContent.append("<b>Test System: </b> http://" + testHostPort + "<br/>");
         emailContent.append("<br/>");
         emailContent.append("<b>Overall Summary: </b>" + "</br>");
-        overallSummary();
+        overallSummary(environment);
         emailContent.append("<br/>");
 
 //        if (failures > 15) {
@@ -475,40 +475,78 @@ public class Main {
 
     }
 
-    public static void overallSummary() {
+    public static void overallSummary(String environment) {
         myloop:
-        for (DefinedTests dt : DefinedTests.values()) {
-            try {
-                url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            Document dom = null;
-            try {
-                dom = new SAXReader().read(url);
-                @SuppressWarnings("unchecked")
-                List<Element> les = dom.getRootElement().elements();
-                for (Element el : les) {
-                    if (el.getName() == "building") {
-                        if (el.getText() == "true") {
-                            System.out.println("Found a running job.");
-                            isRunning += 1;
-                            //emailContent.append( "<b>RUNNING</b>" );
-                            break myloop; //break out of for loop
-                        }
-                    }
-                    if (el.getName() == "result") {
-                        if (el.getText().contains("FAILURE")) {
-                            failures += 1;
-                        } else if (el.getText().contains("UNSTABLE")) {
-                            unstable += 1;
-                        } else if (el.getText().contains("SUCCESS")) {
-                            successful += 1;
-                        }
-                    }
+        if(environment == "qa"){
+            for (DefinedTests dt : DefinedTests.values()) {
+                try {
+                    url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
                 }
-            } catch (DocumentException e) {
-                e.printStackTrace();
+                Document dom = null;
+                try {
+                    dom = new SAXReader().read(url);
+                    @SuppressWarnings("unchecked")
+                    List<Element> les = dom.getRootElement().elements();
+                    for (Element el : les) {
+                        if (el.getName() == "building") {
+                            if (el.getText() == "true") {
+                                System.out.println("Found a running job.");
+                                isRunning += 1;
+                                //emailContent.append( "<b>RUNNING</b>" );
+                                break myloop; //break out of for loop
+                            }
+                        }
+                        if (el.getName() == "result") {
+                            if (el.getText().contains("FAILURE")) {
+                                failures += 1;
+                            } else if (el.getText().contains("UNSTABLE")) {
+                                unstable += 1;
+                            } else if (el.getText().contains("SUCCESS")) {
+                                successful += 1;
+                            }
+                        }
+                    }
+                } catch (DocumentException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else{
+            for (SatTests dt : SatTests.values()) {
+                try {
+                    url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                Document dom = null;
+                try {
+                    dom = new SAXReader().read(url);
+                    @SuppressWarnings("unchecked")
+                    List<Element> les = dom.getRootElement().elements();
+                    for (Element el : les) {
+                        if (el.getName() == "building") {
+                            if (el.getText() == "true") {
+                                System.out.println("Found a running job.");
+                                isRunning += 1;
+                                //emailContent.append( "<b>RUNNING</b>" );
+                                break myloop; //break out of for loop
+                            }
+                        }
+                        if (el.getName() == "result") {
+                            if (el.getText().contains("FAILURE")) {
+                                failures += 1;
+                            } else if (el.getText().contains("UNSTABLE")) {
+                                unstable += 1;
+                            } else if (el.getText().contains("SUCCESS")) {
+                                successful += 1;
+                            }
+                        }
+                    }
+                } catch (DocumentException e) {
+                    e.printStackTrace();
+                }
             }
         }
         emailContent.append("Success job(s)    : " + successful + "</br>");
