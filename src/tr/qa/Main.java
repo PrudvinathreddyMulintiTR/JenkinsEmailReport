@@ -313,9 +313,8 @@ public class Main {
         emailContent.append("<b>Individual Job Report:</b>" + "</br>");
         emailContent.append("<style> table ,th, td {border: 1px solid black;border-collapse: collapse;} th, td {padding: 15px;} th{background-color: #ff9900;}</style>");
         emailContent.append("<table style='width:auto' ><tr><th>S.No</th><th >RestJob Name</th><th >Status</th></tr>");
-
+        myloop:
         if(environment == "qa"){
-            myloop:
             for (DefinedTests dt : DefinedTests.values()) {
                 try {
                     url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
@@ -379,8 +378,7 @@ public class Main {
                 counter++;
 
             }
-        }else if(environment == "sat"){
-            myloop:
+        }else{
             for (SatTests dt : SatTests.values()) {
                 try {
                     url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
