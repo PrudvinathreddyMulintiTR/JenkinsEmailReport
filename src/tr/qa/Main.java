@@ -290,7 +290,6 @@ public class Main {
 
     private static void buildEmailContent(String environment) {
         System.out.println("environment: "+environment);
-        String qa = new String("qa");
         int counter = 1;
         emailContent.append("Hi Team, " + "<br/>" + "</br>");
         emailContent.append("Please find below the summary & detailed UI Automation Jobs execution report." + "<br/>" + "</br>");
@@ -309,14 +308,14 @@ public class Main {
         emailContent.append("<b>Individual Job Report:</b>" + "</br>");
         emailContent.append("<style> table ,th, td {border: 1px solid black;border-collapse: collapse;} th, td {padding: 15px;} th{background-color: #ff9900;}</style>");
         emailContent.append("<table style='width:auto' ><tr><th>S.No</th><th >RestJob Name</th><th >Status</th></tr>");
-        if(environment == qa){
+        if(environment == "qa"){
             System.out.println("Yes");
         }else{
-            System.out.println("No");
+            System.out.println(environment.equals("qa"));
             System.out.println(environment);
         }
         myloop:
-        if(environment == qa){
+        if(environment == "qa"){
             for (DefinedTests dt : DefinedTests.values()) {
                 try {
                     url = new URL("http://" + jenkinsHostPort + "/job/" + dt.toString() + "/lastBuild/api/xml");
