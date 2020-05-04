@@ -45,7 +45,7 @@ public class Main {
         buildNumber = getLatestBuildNumber();
         //getTarget();
         buildEmailContent(environment);
-//        sendEmail();
+        sendEmail();
     }
 
 //    public static void getTarget() {
